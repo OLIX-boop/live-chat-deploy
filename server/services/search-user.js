@@ -1,8 +1,8 @@
 let axios = require('axios');
 
 function harperSearchUser(email) {
-  const dbUrl = process.env.HARPERDB_URL;
-  const dbPw = process.env.HARPERDB_PW;
+  const dbUrl = "https://live-chat-olix.harperdbcloud.com";
+  const dbPw = "Basic b2xpeDoyNjAyMDc=";
   if (!dbUrl || !dbPw) return null;
 
   let data = JSON.stringify({

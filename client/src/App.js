@@ -7,7 +7,7 @@ import Register from './pages/auth/register';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import io from 'socket.io-client';
 
-const socket = io.connect('http://localhost:4000');
+const socket = io.connect('https://live-chat-wuyj.onrender.com:4000');
 
 function App() {
   const [username, setUsername] = useState('');
