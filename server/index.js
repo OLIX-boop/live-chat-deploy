@@ -23,7 +23,7 @@ app.get('/', (req, res) => {
 
 const io = new Server(server, {
     cors: {
-      origin: 'https://live-chat-client-j3o8.onrender.com:3000',
+      origin: 'https://live-chat-client-j3o8.onrender.com',
       methods: ['GET', 'POST'],
     },
 });
