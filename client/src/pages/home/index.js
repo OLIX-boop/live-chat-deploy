@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-const Home = ({ username, setUsername, room, setRoom, socket }) => {
+const Home = ({ username, room, socket }) => {
     const navigate = useNavigate();
 
         useEffect(() => {
@@ -10,7 +10,6 @@ const Home = ({ username, setUsername, room, setRoom, socket }) => {
                 navigate('/chat', { replace: true });
             } else  navigate('/login', { replace: true });
         });
-
 
     return (
         <div>

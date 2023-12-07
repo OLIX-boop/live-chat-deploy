@@ -29,20 +29,32 @@ function App() {
             element={
               <Home
                 username={username}
-                setUsername={setUsername}
                 room={room}
-                setRoom={setRoom}
                 socket={socket}
               />
             }
           />
           <Route
             path='/chat'
-            element={<Chat username={username} room={room} socket={socket} />}
+            element={
+              <Chat                 
+                username={username}
+                setUsername={setUsername}
+                room={room}
+                setRoom={setRoom}
+                socket={socket} 
+              />
+            }
           />
           <Route
             path='/login'
-            element={<Login socket={socket}/>}
+            element={
+              <Login
+                socket={socket}
+                setUsername={setUsername}
+                setRoom={setRoom}
+              />
+            }
           />
           <Route
             path='/register'

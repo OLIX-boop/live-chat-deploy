@@ -34,7 +34,7 @@ const io = new Server(server, {
 let chatRoom = '';
 let allUsers = [];
 
-const CHAT_BOT = 'AzelNUT';
+const CHAT_BOT = 'Chat';
 io.on('connection', (socket) => {
   console.log(`User connected ${socket.id}`);
 
@@ -144,7 +144,6 @@ io.on('connection', (socket) => {
         console.log(err);
         callback({error: err});
       }
-
     })
     .catch((err) => callback({error: err}));
   });

@@ -18,7 +18,7 @@ const defaultOptions = {
 	easing:         "cubic-bezier(.03,.98,.52,.99)",    // Easing on enter/exit.
 }
 
-const Login = ({ socket }) => {
+const Login = ({ socket, setUsername, setRoom }) => {
   const navigate = useNavigate();
   const [hidePassword, setHidePassword] = useState(true);
   const [email, setEmail] = useState("");
@@ -38,8 +38,10 @@ const Login = ({ socket }) => {
         toast.success('Grande Brodez!!');
         socket.emit('join_room', { username: response.username, room: 'room_1' });
         navigate('/chat', { replace: true });
-        localStorage.setItem('room', 'room_1')
-        localStorage.setItem('user', response.username)
+        localStorage.setItem('room', 'room_1');
+        localStorage.setItem('user', response.username);
+        setUsername(response.username);
+        setRoom('room_1');
       } else {
         toast.error(response.message);
       }

@@ -44,14 +44,3 @@ body {
   color: #fff;
 }
 
-.edit {
-  color: rgb(153, 217, 234);
-  margin-top: .5vh;
-  width: 100%;
-  text-align: right;
-}
-
-.edit span:hover {
-  color: white;
-}
-

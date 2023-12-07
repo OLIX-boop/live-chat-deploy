@@ -3,6 +3,7 @@ let axios = require('axios');
 function harperSearchUser(email) {
   const dbUrl = process.env.DB_URL;
   const dbPw = process.env.DB_PSW;
+
   if (!dbUrl || !dbPw) return null;
 
   let data = JSON.stringify({

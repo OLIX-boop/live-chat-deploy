@@ -1,65 +1,109 @@
 .chatContainer {
-    max-width: 1100px;
-    margin: 0 auto;
-    display: grid;
-    grid-template-columns: 1fr 4fr;
-    gap: 20px;
-  }
-  
-  /* Room and users component */
-  .roomAndUsersColumn {
-    border-right: 1px solid #dfdfdf; 
-  }
-  .roomTitle {
-    margin-bottom: 60px;
-    text-transform: uppercase;
-    font-size: 2rem;
-    color: #fff;
-  }
-  .usersTitle {
-    font-size: 1.2rem;
-    color: #fff;
-  }
-  .usersList {
-    list-style-type: none;
-    padding-left: 0;
-    margin-bottom: 60px;
-    color: rgb(153, 217, 234);
-  }
-  .usersList li {
-    margin-bottom: 12px;
-  }
-  
-  /* Messages */
-  .messagesColumn {
-    height: 85vh;
-    overflow: auto;
-    padding: 10px 10px 10px 40px;
-  }
-  .message {
-    background: rgb(0, 24, 111);
-    border-radius: 6px;
-    margin-bottom: 24px;
-    max-width: 600px;
-    padding: 12px;
-  }
-  .msgMeta {
-    color: rgb(153, 217, 234);
-    font-size: 0.75rem;
-  }
-  .msgText {
-    color: #fff;
-  }
-  
-  /* Message input and button */
-  .sendMessageContainer {
-    padding: 16px 20px 20px 16px;
-  }
-  .messageInput {
-    padding: 14px;
-    margin-right: 16px;
-    width: 60%;
-    border-radius: 6px;
-    border: 1px solid rgb(153, 217, 234);
-    font-size: 0.9rem;
-  }
+  max-width: 1100px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 1fr 4fr;
+  gap: 20px;
+}
+
+/* Room and users component */
+.roomAndUsersColumn {
+  border-right: 1px solid #dfdfdf;
+}
+
+.usrs-cont {
+  background-image: url(../home/img/bg.svg);
+  transform-style: preserve-3d;
+  padding: 2vh;
+  border-radius: 10px;
+  margin-right: 3vh;
+}
+
+.roomTitle {
+  margin-bottom: 60px;
+  text-transform: uppercase;
+  font-size: 2rem;
+  color: #fff;
+}
+.usersTitle {
+  font-size: 1.2rem;
+  color: #fff;
+  transform: translateZ(5px);
+}
+.usersList {
+  list-style-type: none;
+  padding-left: 0;
+  margin-bottom: 60px;
+  color: rgb(153, 217, 234);
+  transform: translateZ(5px);
+}
+.usersList li {
+  margin-bottom: 12px;
+}
+
+.usersList li:hover {
+  color: white;
+  transition-duration: .5s;
+}
+
+/* Messages */
+.messagesColumn {
+  height: 85vh;
+  overflow: auto;
+  padding: 10px 10px 10px 40px;
+}
+.message {
+  background: rgb(63, 73, 204);
+  border-radius: 6px;
+  margin-bottom: 24px;
+  max-width: 600px;
+  padding: 12px;
+}
+.msgMeta {
+  color: rgb(153, 217, 234);
+  font-size: 0.75rem;
+}
+.msgText {
+  color: #fff;
+}
+
+/* Message input and button */
+.sendMessageContainer {
+  padding: 16px 20px 20px 16px;
+}
+.messageInput {
+  padding: 14px;
+  margin-right: 16px;
+  width: 60%;
+  border-radius: 6px;
+  border: 1px solid rgb(153, 217, 234);
+  font-size: 0.9rem;
+}
+
+.edit {
+  color: rgb(153, 217, 234);
+  margin-top: .5vh;
+  margin-left: 95%;
+  width: fit-content;
+  text-align: right;
+}
+
+.edit span:hover {
+  color: white;
+}
+
+
+/* LEAVE BUTTON */
+
+.btn-leave-outl {
+  color: #ffff;
+  width: 20vh;
+  background: rgb(63, 73, 204);
+  transform: translateZ(10px);
+}
+
+.btn-leave-outl:hover {
+  color: rgb(63, 73, 204);
+  background: rgb(255, 255, 255);
+  transition-duration: .7s;
+}

@@ -6,7 +6,7 @@
   align-items: center;
 }
 .container {
-  width: 50vh;
+  width: max-content;
   color: white;
   margin: 0 auto 0 auto;
   padding: 32px;
