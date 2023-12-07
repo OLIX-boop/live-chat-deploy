@@ -2,8 +2,8 @@ const harperSearchUser = require('./search-user');
 var axios = require("axios");
 
 async function harperCreateUser (email, password, username) {
-  const dbUrl = "https://live-chat-olix.harperdbcloud.com";
-  const dbPw = "Basic b2xpeDoyNjAyMDc=";
+  const dbUrl = process.env.DB_URL;
+  const dbPw = process.env.DB_PSW;
   if (!dbUrl || !dbPw) return null;
 
   var emailUSED = false;

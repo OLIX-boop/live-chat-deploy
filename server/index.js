@@ -21,9 +21,12 @@ app.get('/', (req, res) => {
   res.send('Hello, world!');
 });
 
+var status = process.env.STATUS !== null ? process.env.STATUS : "deploy";// il file env è escluso da github. Quindi durante il deploy andrà in modalità deploy
+console.log("Current mode: " + status)
+
 const io = new Server(server, {
     cors: {
-      origin: 'https://live-chat-client-j3o8.onrender.com',
+      origin: status==="deploy" ? 'https://live-chat-client-j3o8.onrender.com' : 'http://localhost:3000',
       methods: ['GET', 'POST'],
     },
 });
@@ -148,4 +151,4 @@ io.on('connection', (socket) => {
 
 });
 
-server.listen(443, console.log("Server running"));
+server.listen(status==="deploy" ? 443 : 4000, console.log("Server running"));

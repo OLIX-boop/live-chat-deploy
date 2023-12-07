@@ -1,8 +1,8 @@
 var axios = require("axios");
 
 function harperEditMessage(message, id) {
-  const dbUrl = "https://live-chat-olix.harperdbcloud.com";
-  const dbPw = "Basic b2xpeDoyNjAyMDc=";
+  const dbUrl = process.env.DB_URL;
+  const dbPw = process.env.DB_PSW;
   if (!dbUrl || !dbPw) return null;
 
   var data = JSON.stringify({
