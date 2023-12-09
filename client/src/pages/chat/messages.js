@@ -1,7 +1,7 @@
 import './style.css'
 import { useState, useEffect, useRef } from 'react';
 
-const Messages = ({ socket, usersname }) => {
+const Messages = ({ socket, usersname, room }) => {
   const [messagesRecieved, setMessagesReceived] = useState([]);
   const [inEditMode, setInEditMode] = useState({active: false, id: 99999, uniqueId: ''});
   const [editMessageContent, setEditMessageContent] = useState("");
@@ -22,6 +22,23 @@ const Messages = ({ socket, usersname }) => {
 
     return () => socket.off('receive_message');
   }, [socket]);
+
+  socket.on('edit_message', (data) => {
+      const newState = messagesRecieved.map(obj => {
+        if (obj.id === data.id) {
+          return {...obj, message: data.message};
+        }
+  
+        return obj;
+      });
+  
+      setMessagesReceived(newState);
+      setEditMessageContent("");
+      setInEditMode({active: false, id: 99999, uniqueId: ""});
+  });
+
+
+
 
   useEffect(() => {
     socket.on('last_100_messages', (last100Messages) => {
@@ -61,10 +78,9 @@ const Messages = ({ socket, usersname }) => {
       setInEditMode({active: false, id: 99999, uniqueId: ""})
       setEditMessageContent("");
     } else if (e.code === "Enter") {
-      messagesRecieved[inEditMode.id].message = editMessageContent;
-      socket.emit('edit_message', { id: inEditMode.uniqueId, message: editMessageContent});
-      setEditMessageContent("");
-      setInEditMode({active: false, id: 99999, uniqueId: ""});
+      socket.emit('edit_message', { id: inEditMode.uniqueId, message: editMessageContent, room: room, msgIndex: inEditMode.id});
+      // setEditMessageContent("");
+      // setInEditMode({active: false, id: 99999, uniqueId: ""});
     }
   }
 
@@ -89,7 +105,7 @@ const Messages = ({ socket, usersname }) => {
           {!(inEditMode.id === i && inEditMode.active) ?
           <p className='msgText'>{msg.message}</p>
           :
-          <input type="text" name="editMSG" onChange={(e) => setEditMessageContent(e.target.value)} defaultValue={msg.message} onKeyUp={handleEditMode}/>
+          <input type="text" name="editMSG" className='editMSG blink' onChange={(e) => setEditMessageContent(e.target.value)} defaultValue={msg.message} onKeyUp={handleEditMode}/>
           }
 
           <br />

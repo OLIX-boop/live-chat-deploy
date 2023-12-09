@@ -79,11 +79,15 @@ io.on('connection', (socket) => {
   });
 
   socket.on('edit_message', (data) => {
-    const { message, id } = data;
+    const { message, id, room } = data;
     console.log(data)
     harperEditMessage(message, id) // edit message in db
-      .then((response) => console.log(response))
+      .then((response) => 
+        console.log(response)
+      )
       .catch((err) => console.log(err));
+
+      io.in(room).emit('edit_message', data);
   });
 
   socket.on('leave_room', (data) => {

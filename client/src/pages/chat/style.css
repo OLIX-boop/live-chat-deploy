@@ -59,12 +59,21 @@
   max-width: 600px;
   padding: 12px;
 }
+
 .msgMeta {
   color: rgb(153, 217, 234);
   font-size: 0.75rem;
 }
 .msgText {
   color: #fff;
+  margin: 1.7vh 0;
+}
+
+.editMSG {
+  all: unset;
+  color: #fff;
+  margin: 1.7vh 0 3.6vh 0;
+  background-color: rgb(63, 73, 204);
 }
 
 /* Message input and button */
@@ -76,8 +85,19 @@
   margin-right: 16px;
   width: 60%;
   border-radius: 6px;
-  border: 1px solid rgb(153, 217, 234);
+  border: 1px solid rgb(63, 73, 204);
   font-size: 0.9rem;
+}
+
+.btn-primary {
+  background: rgb(63, 73, 204);
+  color: rgb(153, 217, 234);
+}
+
+.btn-primary:hover {
+  transition-duration: .2s;
+  color: rgb(63, 73, 204);
+  background: rgb(153, 217, 234);
 }
 
 .edit {

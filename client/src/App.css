@@ -35,10 +35,7 @@ body {
   border: 1px solid rgb(153, 217, 234);
   background: rgb(63, 73, 204);
 }
-.btn-primary {
-  background: rgb(153, 217, 234);
-  color: rgb(0, 24, 111);
-}
+
 .btn-secondary {
   background: rgb(0, 24, 111);
   color: #fff;
