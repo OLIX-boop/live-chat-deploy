@@ -10,10 +10,10 @@ import io from 'socket.io-client';
 
 var SOCKET;
 if (process.env.REACT_APP_STATUS) {// il file env è escluso da github. Quindi durante il deploy andrà in modalità deploy;
-  SOCKET = 'https://live-chat-wuyj.onrender.com';
+  SOCKET = 'http://localhost:4000';
   console.log("Current mode: BUILD");
 } else {
-  SOCKET = 'http://localhost:4000';
+  SOCKET = 'https://live-chat-wuyj.onrender.com';
   console.log("Current mode: DEPLOY");
 }
 console.log("Socket: " + SOCKET);
