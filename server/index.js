@@ -21,7 +21,7 @@ app.get('/', (req, res) => {
   res.send('Hello, world!');
 });
 
-var status = process.env.STATUS !== null ? process.env.STATUS : "deploy";// il file env è escluso da github. Quindi durante il deploy andrà in modalità deploy
+var status = process.env.STATUS ? process.env.STATUS : "deploy";// il file env è escluso da github. Quindi durante il deploy andrà in modalità deploy
 console.log("Current mode: " + status)
 
 const io = new Server(server, {
