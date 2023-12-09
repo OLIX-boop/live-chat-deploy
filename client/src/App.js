@@ -7,12 +7,18 @@ import Register from './pages/auth/register';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import io from 'socket.io-client';
 
-var status = process.env.REACT_APP_STATUS ? process.env.REACT_APP_STATUS : "deploy";// il file env è escluso da github. Quindi durante il deploy andrà in modalità deploy;
-console.log("Current mode: " + status);
-console.log("Socket: " + status === "deploy" ? 'https://live-chat-wuyj.onrender.com' : "http://localhost:4000");
 
-const socket = io.connect(status === "deploy" ? 'https://live-chat-wuyj.onrender.com' : "http://localhost:4000");
+var SOCKET;
+if (process.env.REACT_APP_STATUS) {// il file env è escluso da github. Quindi durante il deploy andrà in modalità deploy;
+  SOCKET = 'https://live-chat-wuyj.onrender.com';
+  console.log("Current mode: BUILD");
+} else {
+  SOCKET = 'http://localhost:4000';
+  console.log("Current mode: DEPLOY");
+}
+console.log("Socket: " + SOCKET);
 
+const socket = io.connect(SOCKET);
 socket.on("connect", () => {
   console.log(socket.connected ? "Socket connesso con successo" : "Impossibile connettersi al socket"); // controlla se si connette al socket
 });

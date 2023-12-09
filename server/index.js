@@ -21,14 +21,26 @@ app.get('/', (req, res) => {
   res.send('Hello, world!');
 });
 
-var status = process.env.STATUS ? process.env.STATUS : "deploy";// il file env è escluso da github. Quindi durante il deploy andrà in modalità deploy
-console.log("Current mode: " + status);
-console.log("Cors: "+status==="deploy" ? 'https://live-chat-client-j3o8.onrender.com' : 'http://localhost:3000');
-console.log("Port: "+status==="deploy" ? 443 : 4000);
+var port, corsOrigin;
+if (process.env.STATUS) {// il file env è escluso da github. Quindi durante il deploy andrà in modalità deploy
+  port = 4000;
+  corsOrigin = "http://localhost:3000";
+
+  console.log("Current mode: Build");
+} else {
+  port = 443;
+  corsOrigin = "https://live-chat-client-j3o8.onrender.com";
+
+  console.log("Current mode: Deploy");
+}
+
+console.log("Cors: "+corsOrigin);
+console.log("Port: "+port);
+
 
 const io = new Server(server, {
     cors: {
-      origin: status==="deploy" ? 'https://live-chat-client-j3o8.onrender.com' : 'http://localhost:3000',
+      origin: corsOrigin,
       methods: ['GET', 'POST'],
     },
 });
@@ -156,4 +168,4 @@ io.on('connection', (socket) => {
 
 });
 
-server.listen(status==="deploy" ? 443 : 4000, console.log("Server running"));
+server.listen(port, console.log("Server running"));
