@@ -26,7 +26,7 @@ const Messages = ({ socket, usersname, room }) => {
   socket.on('edit_message', (data) => {
       const newState = messagesRecieved.map(obj => {
         if (obj.id === data.id) {
-          return {...obj, message: data.message};
+          return {...obj, message: data.message, __createdtime__: data.createdtime, edited: true};
         }
   
         return obj;
@@ -36,9 +36,6 @@ const Messages = ({ socket, usersname, room }) => {
       setEditMessageContent("");
       setInEditMode({active: false, id: 99999, uniqueId: ""});
   });
-
-
-
 
   useEffect(() => {
     socket.on('last_100_messages', (last100Messages) => {
@@ -78,7 +75,7 @@ const Messages = ({ socket, usersname, room }) => {
       setInEditMode({active: false, id: 99999, uniqueId: ""})
       setEditMessageContent("");
     } else if (e.code === "Enter") {
-      socket.emit('edit_message', { id: inEditMode.uniqueId, message: editMessageContent, room: room, msgIndex: inEditMode.id});
+      socket.emit('edit_message', { id: inEditMode.uniqueId, message: editMessageContent, room: room});
       // setEditMessageContent("");
       // setInEditMode({active: false, id: 99999, uniqueId: ""});
     }
@@ -91,7 +88,7 @@ const Messages = ({ socket, usersname, room }) => {
       {messagesRecieved.map((msg, i) => (
         <div className='message' key={i}>
           <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-            <span className='msgMeta'>{msg.username}</span>
+            <span className='msgMeta'>{msg.username} {msg.edited ? "(modified)": ""}</span>
             <span className='msgMeta'>
               {formatDateFromTimestamp(msg.__createdtime__)}
             </span>

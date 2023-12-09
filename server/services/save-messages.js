@@ -5,6 +5,8 @@ function harperSaveMessage(message, username, room) {
   const dbPw = process.env.DB_PSW;
   if (!dbUrl || !dbPw) return null;
 
+  const edited = false;
+
   var data = JSON.stringify({
     operation: "insert",
     schema: "realtime_chat_app",
@@ -14,6 +16,7 @@ function harperSaveMessage(message, username, room) {
         message,
         username,
         room,
+        edited
       },
     ],
   });

@@ -101,7 +101,7 @@ io.on('connection', (socket) => {
       )
       .catch((err) => console.log(err));
 
-      io.in(room).emit('edit_message', data);
+      io.in(room).emit('edit_message', {...data, createdtime: Date.now()});
   });
 
   socket.on('leave_room', (data) => {

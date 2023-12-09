@@ -5,6 +5,7 @@ function harperEditMessage(message, id) {
   const dbPw = process.env.DB_PSW;
   if (!dbUrl || !dbPw) return null;
 
+  const edited = true;
   var data = JSON.stringify({
     operation: "update",
     schema: "realtime_chat_app",
@@ -13,6 +14,7 @@ function harperEditMessage(message, id) {
       {
         id,
         message,
+        edited
       },
     ],
   });
