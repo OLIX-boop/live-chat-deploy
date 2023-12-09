@@ -8,7 +8,8 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import io from 'socket.io-client';
 
 var status = process.env.REACT_APP_STATUS ? process.env.REACT_APP_STATUS : "deploy";// il file env è escluso da github. Quindi durante il deploy andrà in modalità deploy;
-console.log("Current mode: " + status)
+console.log("Current mode: " + status);
+console.log("Socket: " + status === "deploy" ? 'https://live-chat-wuyj.onrender.com' : "http://localhost:4000");
 
 const socket = io.connect(status === "deploy" ? 'https://live-chat-wuyj.onrender.com' : "http://localhost:4000");
 

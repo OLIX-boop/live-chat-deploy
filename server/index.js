@@ -22,7 +22,9 @@ app.get('/', (req, res) => {
 });
 
 var status = process.env.STATUS ? process.env.STATUS : "deploy";// il file env è escluso da github. Quindi durante il deploy andrà in modalità deploy
-console.log("Current mode: " + status)
+console.log("Current mode: " + status);
+console.log("Cors: "+status==="deploy" ? 'https://live-chat-client-j3o8.onrender.com' : 'http://localhost:3000');
+console.log("Port: "+status==="deploy" ? 443 : 4000);
 
 const io = new Server(server, {
     cors: {
