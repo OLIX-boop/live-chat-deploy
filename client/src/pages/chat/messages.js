@@ -1,57 +1,72 @@
-import './style.css'
-import { useState, useEffect, useRef } from 'react';
+import "./style.css";
+import { useState, useEffect, useRef } from "react";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faPen, faXmark } from "@fortawesome/free-solid-svg-icons";
 
 const Messages = ({ socket, usersname, room }) => {
   const [messagesRecieved, setMessagesReceived] = useState([]);
-  const [inEditMode, setInEditMode] = useState({active: false, id: 99999, uniqueId: ''});
+  const [preventScroll, setPreventScroll] = useState(false);
+  const [inEditMode, setInEditMode] = useState({
+    active: false,
+    id: 99999,
+    uniqueId: "",
+  });
   const [editMessageContent, setEditMessageContent] = useState("");
   const messagesColumnRef = useRef(null);
+  const messageContentEdit = useRef(null);
 
   useEffect(() => {
-    socket.on('receive_message', (data) => {
+    socket.on("receive_message", (data) => {
       setMessagesReceived((state) => [
         ...state,
         {
           message: data.message,
           username: data.username,
           __createdtime__: data.__createdtime__,
-          isWelcome : data.isWelcome || false
+          isWelcome: data.isWelcome || false,
         },
       ]);
     });
 
-    return () => socket.off('receive_message');
+    return () => socket.off("receive_message");
   }, [socket]);
 
-  socket.on('edit_message', (data) => {
-      const newState = messagesRecieved.map(obj => {
-        if (obj.id === data.id) {
-          return {...obj, message: data.message, __createdtime__: data.createdtime, edited: true};
-        }
-  
-        return obj;
-      });
-  
-      setMessagesReceived(newState);
-      setEditMessageContent("");
-      setInEditMode({active: false, id: 99999, uniqueId: ""});
+  socket.on("edit_message", (data) => {
+    setPreventScroll(true);
+    const newState = messagesRecieved.map((obj) => {
+      if (obj.id === data.id) {
+        return {
+          ...obj,
+          message: data.message,
+          __createdtime__: data.createdtime,
+          edited: true,
+        };
+      }
+
+      return obj;
+    });
+    
+    setMessagesReceived(newState);
+    setEditMessageContent("");
+    setInEditMode({ active: false, id: 99999, uniqueId: "" });
   });
 
   useEffect(() => {
-    socket.on('last_100_messages', (last100Messages) => {
+    socket.on("last_100_messages", (last100Messages) => { 
       last100Messages = JSON.parse(last100Messages);
       last100Messages = sortMessagesByDate(last100Messages);
       setMessagesReceived((state) => [...last100Messages, ...state]);
-    });
+    }); 
 
-    return () => socket.off('last_100_messages');
+    return () => socket.off("last_100_messages");
   }, [socket]);
 
   useEffect(() => {
-    messagesColumnRef.current.scrollTop = messagesColumnRef.current.scrollHeight;
+    if (!preventScroll) {
+      setPreventScroll(false);
+      messagesColumnRef.current.scrollTop = messagesColumnRef.current.scrollHeight;
+    }
   }, [messagesRecieved]);
-
-
 
   function sortMessagesByDate(messages) {
     return messages.sort(
@@ -60,52 +75,88 @@ const Messages = ({ socket, usersname, room }) => {
   }
 
   function formatDateFromTimestamp(timestamp) {
-    return new Date(timestamp).toLocaleString()
-  };
+    return new Date(timestamp).toLocaleString();
+  }
 
-  function editMessage(id, message, uniqueId) {
+  const editMessage = (id, message, uniqueId) => {
     if (!inEditMode.active) {
-      setInEditMode({active: true, id: id, uniqueId: uniqueId});
+      setInEditMode({ active: true, id: id, uniqueId: uniqueId });
       setEditMessageContent(message);
+      setTimeout(() => {
+        messageContentEdit.current.focus();  
+        handleJump();
+      }, 100);  
     }
   }
+
+  const handleJump = () => {
+    const range = document.createRange();
+    const selection = window.getSelection();
+    range.setStart(messageContentEdit.current, 1);
+    range.collapse(true);
+    selection.removeAllRanges();
+    selection.addRange(range);
+  };
 
   function handleEditMode(e) {
     if (e.code === "Escape") {
-      setInEditMode({active: false, id: 99999, uniqueId: ""})
+      setInEditMode({ active: false, id: 99999, uniqueId: "" });
       setEditMessageContent("");
     } else if (e.code === "Enter") {
-      socket.emit('edit_message', { id: inEditMode.uniqueId, message: editMessageContent, room: room});
-      // setEditMessageContent("");
-      // setInEditMode({active: false, id: 99999, uniqueId: ""});
+      socket.emit("edit_message", {
+        id: inEditMode.uniqueId,
+        message: editMessageContent,
+        room: room,
+      });
     }
   }
 
-  if (usersname === "") usersname = localStorage.getItem('user'); // reset usersname variable if user refreshes the page
-  
+  if (usersname === "") usersname = localStorage.getItem("user"); // reset usersname variable if user refreshes the page
+
+
+
   return (
-    <div className='messagesColumn' ref={messagesColumnRef}>
+    <div className="messagesColumn" ref={messagesColumnRef}>
       {messagesRecieved.map((msg, i) => (
-        <div className='message' key={i}>
-          <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-            <span className='msgMeta'>{msg.username} {msg.edited ? "(modified)": ""}</span>
-            <span className='msgMeta'>
+        <div
+          className={msg.username === usersname ? "message owner" : "message"}
+          key={i}
+        >
+          <div style={{ display: "flex", justifyContent: "space-between" }}>
+            <span className="msgMeta">
+              {msg.username === usersname ? "Me" : msg.username}{" "}
+              {msg.edited ? "(modified)" : ""}
+            </span>
+            <span className="msgMeta">
               {formatDateFromTimestamp(msg.__createdtime__)}
             </span>
           </div>
-          {
-           !msg.isWelcome && msg.username === usersname &&
-            <div className='edit' onClick={() => editMessage(i, msg.message, msg.id)}>
-              <span>Edit</span>
-            </div>
-          }
-          {!(inEditMode.id === i && inEditMode.active) ?
-          <p className='msgText'>{msg.message}</p>
-          :
-          <input type="text" name="editMSG" className='editMSG blink' onChange={(e) => setEditMessageContent(e.target.value)} defaultValue={msg.message} onKeyUp={handleEditMode}/>
-          }
 
-          <br />
+          <p
+            className="msgText"
+            suppressContentEditableWarning={true}
+            onKeyUp={handleEditMode}
+            ref={inEditMode.id === i && inEditMode.active ? messageContentEdit : null}
+            contentEditable={inEditMode.id === i && inEditMode.active}
+          >
+            {msg.message}
+          </p>
+
+          {!msg.isWelcome && msg.username === usersname && (
+            <div
+              className="edit"
+              onClick={() => editMessage(i, msg.message, msg.id)}
+            >
+              <span>
+                {" "}
+                {!(inEditMode.id === i && inEditMode.active) ? (
+                  <FontAwesomeIcon icon={faPen} />
+                ) : (
+                  <FontAwesomeIcon style={{ fontSize: "3vh" }} icon={faXmark} />
+                )}{" "}
+              </span>
+            </div>
+          )}
         </div>
       ))}
     </div>

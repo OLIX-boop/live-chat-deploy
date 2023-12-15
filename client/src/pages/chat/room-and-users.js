@@ -48,8 +48,8 @@ const RoomAndUsers = ({ socket, username, room, setUsername, setRoom}) => {
       <h2 className={'roomTitle'}>{room}</h2>
 
     <Tilt options={defaultOptions} className="usrs-cont">
-      {roomUsers.length > 0 && <h5 className={'usersTitle'}>Users:</h5>}
-          <ul className='usersList'>
+      {roomUsers.length > 0 && <h5 className={'usersTitle'}>Users</h5>}
+          <ul className='usersList' style={{display:'flex', justifyContent:"center", alignItems:"center"}} >
             {roomUsers.map((user) => (
               <li
                 style={{
@@ -61,10 +61,11 @@ const RoomAndUsers = ({ socket, username, room, setUsername, setRoom}) => {
               </li>
             ))}
           </ul>
-
-        <button className='btn btn-leave-outl' onClick={leaveRoom}>
-          Leave
-        </button>
+          <div style={{display:'flex', justifyContent:"center", alignItems:"center"}}>
+            <button className='btn btn-leave-outl' onClick={leaveRoom}>
+              Leave
+            </button>
+          </div>
       </Tilt>
     </div>
   );

@@ -9,6 +9,9 @@
 /* Room and users component */
 .roomAndUsersColumn {
   border-right: 1px solid #dfdfdf;
+  -webkit-user-select: none; /* Safari */
+  -ms-user-select: none; /* IE 10 and IE 11 */
+  user-select: none; /* Standard syntax */
 }
 
 .usrs-cont {
@@ -29,6 +32,7 @@
   font-size: 1.2rem;
   color: #fff;
   transform: translateZ(5px);
+  text-align: center;
 }
 .usersList {
   list-style-type: none;
@@ -50,14 +54,19 @@
 .messagesColumn {
   height: 85vh;
   overflow: auto;
-  padding: 10px 10px 10px 40px;
+  padding: 0;
+  max-width: 93vh;
 }
 .message {
   background: rgb(63, 73, 204);
   border-radius: 6px;
   margin-bottom: 24px;
-  max-width: 600px;
+  max-width: 55vh;
   padding: 12px;
+}
+
+.owner {
+  margin-left: 34vh;
 }
 
 .msgMeta {
@@ -67,6 +76,7 @@
 .msgText {
   color: #fff;
   margin: 1.7vh 0;
+  word-wrap: break-word;
 }
 
 .editMSG {
@@ -78,12 +88,13 @@
 
 /* Message input and button */
 .sendMessageContainer {
-  padding: 16px 20px 20px 16px;
+  padding: 2vh 2vh 2vh 0vh;
+  display: flex;
 }
 .messageInput {
-  padding: 14px;
   margin-right: 16px;
   width: 60%;
+  height: 7vh !important;
   border-radius: 6px;
   border: 1px solid rgb(63, 73, 204);
   font-size: 0.9rem;
@@ -102,14 +113,18 @@
 
 .edit {
   color: rgb(153, 217, 234);
-  margin-top: .5vh;
-  margin-left: 95%;
-  width: fit-content;
+  margin-left: 97%;
+  width: 0;
+  height: 0;
+  top: -2.5vh;
   text-align: right;
+  position: relative;
 }
+
 
 .edit span:hover {
   color: white;
+  transition-duration: .5s;
 }
 
 
