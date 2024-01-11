@@ -11,6 +11,8 @@ const harperEditMessage = require('./services/edit-message');
 const harperCreateUser = require('./services/create-user');
 const harperSearchUser = require('./services/search-user');
 
+const DB = require('./services/database');
+
 const leaveRoom = require('./utils/leave-room');
 const bcrypt = require('bcrypt');
 

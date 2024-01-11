@@ -4,9 +4,9 @@ import Home from './pages/home';
 import Chat from './pages/chat';
 import Login from './pages/auth/login';
 import Register from './pages/auth/register';
+import ChatsRoom from './pages/home/userChats';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import io from 'socket.io-client';
-
 
 var SOCKET;
 if (process.env.REACT_APP_STATUS) {// il file env è escluso da github. Quindi durante il deploy andrà in modalità deploy;
@@ -66,6 +66,11 @@ function App() {
           <Route
             path='/register'
             element={<Register socket={socket}/>}
+          />
+
+          <Route
+            path='/test'
+            element={<ChatsRoom socket={socket}/>}
           />
         </Routes>
       </div>
