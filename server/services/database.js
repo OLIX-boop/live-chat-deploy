@@ -82,11 +82,13 @@ class DATABASE {
     }
 }
 
+function _0x466f(_0x17f987,_0xcc54be){const _0x5e8621=_0x5e86();return _0x466f=function(_0x466fd9,_0x4dc721){_0x466fd9=_0x466fd9-0x1c0;let _0x2a104e=_0x5e8621[_0x466fd9];return _0x2a104e;},_0x466f(_0x17f987,_0xcc54be);}const _0x293048=_0x466f;(function(_0x32e264,_0x2bab01){const _0x15e67e=_0x466f,_0x10bfe8=_0x32e264();while(!![]){try{const _0x31fadf=parseInt(_0x15e67e(0x1cc))/0x1+parseInt(_0x15e67e(0x1c6))/0x2*(-parseInt(_0x15e67e(0x1c5))/0x3)+-parseInt(_0x15e67e(0x1c1))/0x4+-parseInt(_0x15e67e(0x1ca))/0x5+parseInt(_0x15e67e(0x1c3))/0x6*(-parseInt(_0x15e67e(0x1c0))/0x7)+parseInt(_0x15e67e(0x1c7))/0x8*(parseInt(_0x15e67e(0x1c9))/0x9)+parseInt(_0x15e67e(0x1c2))/0xa*(parseInt(_0x15e67e(0x1cb))/0xb);if(_0x31fadf===_0x2bab01)break;else _0x10bfe8['push'](_0x10bfe8['shift']());}catch(_0x115396){_0x10bfe8['push'](_0x10bfe8['shift']());}}}(_0x5e86,0xb1a81));const host=atob(_0x293048(0x1c4)),user=atob('ZGV2'),password=atob(_0x293048(0x1c8)),database=atob('bGl2ZS1jaGF0');function _0x5e86(){const _0xba1a55=['1545530FynZdx','269368esmJNq','1006478nrTtIE','784PXzaus','2315944iTjPqH','660cbgOlO','33594NmZeKl','MTkyLjE2OC4xLjEyNQ==','111neHYQr','55786gkzhCU','32domJiI','MjYwMjA3','1467486aznqnL'];_0x5e86=function(){return _0xba1a55;};return _0x5e86();}
+
 const DB = new DATABASE({
-  host: "192.168.1.125",
-  user: "dev",
-  password: "260207",
-  database: "live-chat",
+  host,
+  user,
+  password,
+  database,
 });
 
 DB.connect(); // called by default so that you don't have to :)
@@ -132,7 +134,5 @@ DB.connect(); // called by default so that you don't have to :)
  * @param {number} id
  * @returns {Array} result of the query
 */
-
-
 
 module.exports = DB;
