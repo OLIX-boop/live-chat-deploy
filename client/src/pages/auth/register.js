@@ -36,11 +36,14 @@ const Register = ({ socket }) => {
     socket.emit("register", {email: email, password: password, user: user}, (response) => {
       toast.dismiss(toastId);
       if (response.error) {
-        console.log(response.error);
-        return alert("ERROR: check console");
+        const error = response.error === 'Email already used' ? response.error : 'ERROR: check console';
+        console.log(error);
+        return toast.error(error);
       }
       toast.success("Account created succesfully!");
-      navigate('/login');
+      setTimeout(() => {
+        navigate('/login');
+      }, 500);
     });
   }
 

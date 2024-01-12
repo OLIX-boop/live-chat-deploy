@@ -17,6 +17,7 @@ const Messages = ({ socket, usersname, room }) => {
 
   useEffect(() => {
     socket.on("receive_message", (data) => {
+      console.log(data) 
       setMessagesReceived((state) => [
         ...state,
         {
@@ -24,6 +25,7 @@ const Messages = ({ socket, usersname, room }) => {
           username: data.username,
           __createdtime__: data.__createdtime__,
           isWelcome: data.isWelcome || false,
+          id: data.id || null
         },
       ]);
     });
@@ -33,6 +35,7 @@ const Messages = ({ socket, usersname, room }) => {
 
   socket.on("edit_message", (data) => {
     setPreventScroll(true);
+    console.log(data)
     const newState = messagesRecieved.map((obj) => {
       if (obj.id === data.id) {
         return {
@@ -45,6 +48,7 @@ const Messages = ({ socket, usersname, room }) => {
 
       return obj;
     });
+
     
     setMessagesReceived(newState);
     setEditMessageContent("");
@@ -53,7 +57,6 @@ const Messages = ({ socket, usersname, room }) => {
 
   useEffect(() => {
     socket.on("last_100_messages", (last100Messages) => { 
-      last100Messages = JSON.parse(last100Messages);
       last100Messages = sortMessagesByDate(last100Messages);
       setMessagesReceived((state) => [...last100Messages, ...state]);
     }); 
@@ -66,7 +69,7 @@ const Messages = ({ socket, usersname, room }) => {
       setPreventScroll(false);
       messagesColumnRef.current.scrollTop = messagesColumnRef.current.scrollHeight;
     }
-  }, [messagesRecieved]);
+  }, [messagesRecieved, preventScroll]);
 
   function sortMessagesByDate(messages) {
     return messages.sort(
@@ -79,6 +82,8 @@ const Messages = ({ socket, usersname, room }) => {
   }
 
   const editMessage = (id, message, uniqueId) => {
+    console.log(id, message, uniqueId)
+    console.log(!inEditMode.active)
     if (!inEditMode.active) {
       setInEditMode({ active: true, id: id, uniqueId: uniqueId });
       setEditMessageContent(message);
@@ -99,6 +104,7 @@ const Messages = ({ socket, usersname, room }) => {
   };
 
   function handleEditMode(e) {
+    console.log(e.target);
     if (e.code === "Escape") {
       setInEditMode({ active: false, id: 99999, uniqueId: "" });
       setEditMessageContent("");
@@ -110,10 +116,8 @@ const Messages = ({ socket, usersname, room }) => {
       });
     }
   }
-
+  
   if (usersname === "") usersname = localStorage.getItem("user"); // reset usersname variable if user refreshes the page
-
-
 
   return (
     <div className="messagesColumn" ref={messagesColumnRef}>
@@ -136,6 +140,7 @@ const Messages = ({ socket, usersname, room }) => {
             className="msgText"
             suppressContentEditableWarning={true}
             onKeyUp={handleEditMode}
+            onInput={(e) => setEditMessageContent(e.currentTarget.textContent)}
             ref={inEditMode.id === i && inEditMode.active ? messageContentEdit : null}
             contentEditable={inEditMode.id === i && inEditMode.active}
           >

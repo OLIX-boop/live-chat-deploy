@@ -49,7 +49,7 @@ const RoomAndUsers = ({ socket, username, room, setUsername, setRoom}) => {
 
     <Tilt options={defaultOptions} className="usrs-cont">
       {roomUsers.length > 0 && <h5 className={'usersTitle'}>Users</h5>}
-          <ul className='usersList' style={{display:'flex', justifyContent:"center", alignItems:"center"}} >
+          <ul className='usersList' style={{display:'flex', justifyContent:"center", alignItems:"center", flexDirection: "column"}} >
             {roomUsers.map((user) => (
               <li
                 style={{

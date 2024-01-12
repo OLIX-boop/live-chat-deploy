@@ -5,12 +5,6 @@ const cors = require('cors');
 const app = express();
 const { Server } = require('socket.io');
 
-const harperSaveMessage = require('./services/save-messages');
-const harperGetMessages = require('./services/get-messages');
-const harperEditMessage = require('./services/edit-message');
-const harperCreateUser = require('./services/create-user');
-const harperSearchUser = require('./services/search-user');
-
 const DB = require('./services/database');
 
 const leaveRoom = require('./utils/leave-room');
@@ -78,7 +72,7 @@ io.on('connection', (socket) => {
     socket.to(room).emit('chatroom_users', chatRoomUsers);
     socket.emit('chatroom_users', chatRoomUsers);
 
-    harperGetMessages(room)
+    DB.getMessages(room)
     .then((last100Messages) => {
       socket.emit('last_100_messages', last100Messages);
     })
@@ -86,18 +80,19 @@ io.on('connection', (socket) => {
   });
 
   socket.on('send_message', (data) => {
-    const { message, username, room, __createdtime__ } = data;
-    io.in(room).emit('receive_message', data); // Send to all users in room, including sender
-    console.log(data)
-    harperSaveMessage(message, username, room, __createdtime__) // Save message in db
-      .then((response) => console.log(response))
+    const { message, username, room } = data;
+    console.log(data);
+    DB.saveMessage(message, username, room) // Save message in db
+      .then((response) => {
+        io.in(room).emit('receive_message', {...data, id: response.insertId}); // Send to all users in room, including sender
+      })
       .catch((err) => console.log(err));
   });
 
   socket.on('edit_message', (data) => {
     const { message, id, room } = data;
-    console.log(data)
-    harperEditMessage(message, id) // edit message in db
+    console.log(data);
+    DB.editMessage(message, id) // edit message in db
       .then((response) => 
         console.log(response)
       )
@@ -136,7 +131,7 @@ io.on('connection', (socket) => {
   socket.on('register', async (data, callback) => {
     const { email, password, user } = data;
     const hashedPass = await bcrypt.hash(password,10);
-    harperCreateUser(email, hashedPass, user)
+    DB.createUser(email, hashedPass, user)
     .then(() => {
       callback({});
     })
@@ -146,12 +141,12 @@ io.on('connection', (socket) => {
   socket.on('login', async (data, callback) => {
     const { email, password } = data;
 
-    harperSearchUser(email)
-    .then(async (cryptedPassword) => {
-      if (cryptedPassword.length < 1) return callback({success: false, message: "There's no account with that email."}); 
+    const user = await DB.searchUser(email);
+
+      if (user.length < 1) return callback({success: false, message: "There's no account with that email."}); 
       
       try {
-        cryptedPassword = cryptedPassword[0];
+        const cryptedPassword = user[0];
         await bcrypt.compare(password, cryptedPassword.password).then(function(autenticated) {
           if (autenticated) {
             console.log("login successfull");
@@ -165,8 +160,6 @@ io.on('connection', (socket) => {
         callback({error: err});
       }
     })
-    .catch((err) => callback({error: err}));
-  });
 
 });
 
